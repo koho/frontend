@@ -100,7 +100,10 @@ export default function Folder({ folder,isActive }) {
             >
                 <FolderIcon />
             </div>
-            <Tooltip title={folder.name} aria-label={folder.name}>
+            <Tooltip title={folder.name} aria-label={folder.name}
+                     style={{color: "rgba(0,0,0,.72)",
+                         fill: "rgba(0,0,0,.72)",
+                         "font-weight": 500}}>
                 <Typography
                     variant="body2"
                     className={classNames(classes.folderName, {

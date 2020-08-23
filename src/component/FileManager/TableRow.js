@@ -99,6 +99,7 @@ class TableRowCompoment extends Component {
 
         return (
             <TableRow
+                ref={this.props.ref}
                 onContextMenu={this.props.contextMenu}
                 onClick={this.props.handleClick}
                 onDoubleClick={this.props.handleDoubleClick.bind(this)}
@@ -117,6 +118,9 @@ class TableRowCompoment extends Component {
                             [classes.folderNameSelected]: isSelected,
                             [classes.folderNameNotSelected]: !isSelected
                         })}
+                        style={{color: "rgba(0,0,0,.72)",
+                            fill: "rgba(0,0,0,.72)",
+                            "font-weight": 500}}
                     >
                         {icon}
                         {this.props.file.name}

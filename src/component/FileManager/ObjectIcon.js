@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     changeContextMenu,
@@ -46,6 +46,7 @@ export default function ObjectIcon(props) {
     const navigatorPath = useSelector(state => state.navigator.path);
     const location = useLocation();
     const history = useHistory();
+    const myRef = useRef(null);
 
     const dispatch = useDispatch();
     const ContextMenu = useCallback(
@@ -124,6 +125,30 @@ export default function ObjectIcon(props) {
         }
     };
 
+    const changeURLArg = (url,arg,arg_val) => {
+        const pattern=arg+'=([^&]*)';
+        const replaceText=arg+'='+arg_val;
+        if(url.match(pattern)){
+            let tmp='/('+ arg+'=)([^&]*)/gi';
+            tmp=url.replace(eval(tmp),replaceText);
+            return tmp;
+        }else{
+            if(url.match('[?]')){
+                return url+'&'+replaceText;
+            }else{
+                return url+'?'+replaceText;
+            }
+        }
+    };
+
+    const getURLString = arg => {
+        const reg = new RegExp("(\\?|&)" + arg + "=([^&]*)(&|$)", "i");
+        const r = window.location.href.match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    }
+
     const handleDoubleClick = () => {
         if (props.file.type === "up") {
             return;
@@ -144,6 +169,7 @@ export default function ObjectIcon(props) {
             OpenLoadingDialog("获取下载地址...");
             return;
         }
+        window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", selected[0].id));
         const previewPath =
             selected[0].path === "/"
                 ? selected[0].path + selected[0].name
@@ -267,14 +293,27 @@ export default function ObjectIcon(props) {
         })
     });
 
+    const handleSelect = function() {
+        const id = getURLString("sel")
+        if (id != null && id === props.file.id) {
+            console.log("Selecting file: " + id);
+            selectFile({ctrlKey: null, metaKey: null, shiftKey: null});
+            window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", ""));
+            if (myRef.current != null)
+                window.scrollTo(0, myRef.current.offsetTop);
+        }
+    }
+
     useEffect(() => {
         preview(getEmptyImage(), { captureDraggingState: true });
+        handleSelect();
         // eslint-disable-next-line
     }, []);
 
     if (viewMethod === "list") {
         return (
             <TableItem
+                ref={myRef}
                 contextMenu={contextMenu}
                 handleClick={handleClick}
                 handleDoubleClick={handleDoubleClick.bind(this)}
@@ -292,6 +331,7 @@ export default function ObjectIcon(props) {
             })}
         >
             <div
+                ref={myRef}
                 className={classes.fixFlex}
                 onContextMenu={contextMenu}
                 onClick={handleClick}

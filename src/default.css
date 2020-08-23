@@ -1,0 +1,45 @@
+.grid-xs-2 {
+    flex-grow: 0;
+    max-width: 50%;
+    flex-basis: 50%;
+}
+
+@media (min-width: 840px) {
+    .grid-sm-3 {
+        flex-grow: 0;
+        max-width: 33.33%;
+        flex-basis: 33.33%;
+    }
+}
+
+@media (min-width: 1080px) {
+    .grid-md-4 {
+        flex-grow: 0;
+        max-width: 25%;
+        flex-basis: 25%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid-md-5 {
+        flex-grow: 0;
+        max-width: 20%;
+        flex-basis: 20%;
+    }
+}
+
+@media (min-width: 1500px) {
+    .grid-md-6 {
+        flex-grow: 0;
+        max-width: 16%;
+        flex-basis: 16%;
+    }
+}
+
+@media (min-width: 1800px) {
+    .grid-lg-9 {
+        flex-grow: 0;
+        max-width: 11.11%;
+        flex-basis: 11.11%;
+    }
+}

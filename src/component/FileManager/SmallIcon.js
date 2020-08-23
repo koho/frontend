@@ -101,7 +101,10 @@ class SmallIconCompoment extends Component {
                         [classes.iconSelected]: isSelected,
                         [classes.iconNotSelected]: !isSelected,
                     })}><TypeIcon fileName={this.props.file.name}/></div>
-                    <Tooltip title={this.props.file.name} aria-label={this.props.file.name}>
+                    <Tooltip title={this.props.file.name} aria-label={this.props.file.name}
+                             style={{color: "rgba(0,0,0,.72)",
+                                 fill: "rgba(0,0,0,.72)",
+                                 "font-weight": 500}}>
                         <Typography className={classNames(classes.folderName, {
                             [classes.folderNameSelected]: isSelected,
                             [classes.folderNameNotSelected]: !isSelected,

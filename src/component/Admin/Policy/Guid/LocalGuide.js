@@ -102,6 +102,7 @@ export default function LocalGuide(props) {
                   DirNameRule: "uploads/{uid}/{path}",
                   AutoRename: "true",
                   FileNameRule: "{randomkey8}_{originname}",
+                  ThumbNameRule: "uploads/thumbs",
                   IsOriginLinkEnable: "false",
                   BaseURL: "",
                 IsPrivate:"true",

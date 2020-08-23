@@ -15,6 +15,7 @@ import pathHelper from "../../utils/page";
 import ContextMenu from "./ContextMenu";
 import ImgPreivew from "./ImgPreview";
 import ObjectIcon from "./ObjectIcon";
+require("../../default.css")
 
 const styles = theme => ({
     paper: {
@@ -392,10 +393,7 @@ class ExplorerCompoment extends Component {
                               <Grid
                                   key={value.id}
                                   item
-                                  xs={6}
-                                  md={3}
-                                  sm={4}
-                                  lg={2}
+                                  className={["grid-xs-2", "grid-sm-3", "grid-md-4", "grid-md-5", "grid-md-6", "grid-lg-9"]}
                               >
                                   <ObjectIcon
                                       key={value.id}
@@ -429,10 +427,7 @@ class ExplorerCompoment extends Component {
                               <Grid
                                   key={value.id}
                                   item
-                                  xs={6}
-                                  md={3}
-                                  sm={4}
-                                  lg={2}
+                                  className={["grid-xs-2", "grid-sm-3", "grid-md-4", "grid-md-5", "grid-md-6", "grid-lg-9"]}
                               >
                                   <ObjectIcon
                                       key={value.id}
@@ -461,6 +456,7 @@ class ExplorerCompoment extends Component {
                     },
                     classes.button
                 )}
+                style={{backgroundColor: "#ffffff"}}
             >
                 <GlobalHotKeys handlers={this.handlers} keyMap={this.keyMap} />
                 <ContextMenu share={this.props.share} />

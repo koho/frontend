@@ -35,7 +35,7 @@ const styles = theme => ({
     },
 
     button: {
-        border: "1px solid " + theme.palette.divider,
+        border: "1px solid #dadce0",
         width: "100%",
         borderRadius: "6px",
         boxSizing: "border-box",
@@ -72,8 +72,7 @@ const styles = theme => ({
         overflow: "hidden",
         height: "149px",
         width: "100%",
-        borderRadius: "5px 5px 0 0",
-        backgroundColor: theme.palette.background.paper,
+        // borderRadius: "5px 5px 0 0",
         paddingTop: "50px"
     },
     iconBig: {
@@ -238,6 +237,9 @@ class FileIconCompoment extends Component {
                         <Tooltip
                             title={this.props.file.name}
                             aria-label={this.props.file.name}
+                            style={{color: "rgba(0,0,0,.72)",
+                                fill: "rgba(0,0,0,.72)",
+                                "font-weight": 500}}
                         >
                             <Typography
                                 variant="body2"

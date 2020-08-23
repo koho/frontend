@@ -363,6 +363,21 @@ export default function EditPro(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
+                                    缩略图存储路径
+                                </TableCell>
+                                <TableCell>
+                                    <FormControl>
+                                        <Input
+                                            multiline
+                                            value={policy.ThumbNameRule}
+                                            onChange={handleChange("ThumbNameRule")}
+                                        />
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell>文件缩略图存储路径</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row">
                                     允许获取外链
                                 </TableCell>
                                 <TableCell>
