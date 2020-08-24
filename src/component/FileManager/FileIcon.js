@@ -79,9 +79,8 @@ const styles = theme => ({
         fontSize: 50
     },
     picPreview: {
-        objectFit: "cover",
         width: "100%",
-        height: "100%"
+        height: "auto"
     },
     fileInfo: {
         height: "50px",

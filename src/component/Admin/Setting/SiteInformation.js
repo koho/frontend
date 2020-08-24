@@ -36,6 +36,7 @@ export default function SiteInformation() {
     const [loading, setLoading] = useState(false);
     const [options, setOptions] = useState({
         siteURL: "",
+        doc_preview_url: "",
         siteName: "",
         siteTitle: "",
         siteDes: "",
@@ -164,6 +165,22 @@ export default function SiteInformation() {
                                 />
                                 <FormHelperText id="component-helper-text">
                                     非常重要，请确保与实际情况一致。使用云存储策略、支付平台时，请填入可以被外网访问的地址。
+                                </FormHelperText>
+                            </FormControl>
+                        </div>
+                        <div className={classes.form}>
+                            <FormControl fullWidth>
+                                <InputLabel htmlFor="component-helper">
+                                    文档预览URL
+                                </InputLabel>
+                                <Input
+                                    type={"url"}
+                                    value={options.doc_preview_url}
+                                    onChange={handleChange("doc_preview_url")}
+                                    required
+                                />
+                                <FormHelperText id="component-helper-text">
+                                    预览PDF, Word, PowerPoint, Excel文件的接口地址。
                                 </FormHelperText>
                             </FormControl>
                         </div>

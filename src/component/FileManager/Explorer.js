@@ -393,7 +393,7 @@ class ExplorerCompoment extends Component {
                               <Grid
                                   key={value.id}
                                   item
-                                  className={["grid-xs-2", "grid-sm-3", "grid-md-4", "grid-md-5", "grid-md-6", "grid-lg-9"]}
+                                  className={["grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7", "grid-8", "grid-9"]}
                               >
                                   <ObjectIcon
                                       key={value.id}
@@ -427,7 +427,7 @@ class ExplorerCompoment extends Component {
                               <Grid
                                   key={value.id}
                                   item
-                                  className={["grid-xs-2", "grid-sm-3", "grid-md-4", "grid-md-5", "grid-md-6", "grid-lg-9"]}
+                                  className={["grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7", "grid-8", "grid-9"]}
                               >
                                   <ObjectIcon
                                       key={value.id}

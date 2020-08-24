@@ -1,5 +1,5 @@
 export const imgPreviewSuffix = ["bmp","png","gif","jpg","jpeg","svg","webp"];
-export const msDocPreviewSuffix = ["ppt","pptx","pps","doc","docx","xlsx","xls"];
+export const msDocPreviewSuffix = ["ppt","pptx","pps","doc","docx","xlsx","xls","pdf"];
 export const audioPreviewSuffix = ["mp3","ogg"];
 export const videoPreviewSuffix = ["mp4","mkv","webm"];
 export const pdfPreviewSuffix = ["pdf"];
