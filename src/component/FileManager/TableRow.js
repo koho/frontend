@@ -99,7 +99,6 @@ class TableRowCompoment extends Component {
 
         return (
             <TableRow
-                ref={this.props.ref}
                 onContextMenu={this.props.contextMenu}
                 onClick={this.props.handleClick}
                 onDoubleClick={this.props.handleDoubleClick.bind(this)}
@@ -124,6 +123,7 @@ class TableRowCompoment extends Component {
                     >
                         {icon}
                         {this.props.file.name}
+                        <span ref={this.props.iRef}/>
                     </Typography>
                 </TableCell>
                 <TableCell className={classNames(classes.hideAuto,classes.tableRow)}>

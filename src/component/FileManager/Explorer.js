@@ -4,7 +4,7 @@ import SadIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 import EmptyIcon from "@material-ui/icons/Unarchive";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { Component, createRef, useRef } from "react";
 import { configure, GlobalHotKeys } from "react-hotkeys";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -160,6 +160,7 @@ const mapDispatchToProps = dispatch => {
 class ExplorerCompoment extends Component {
     constructor() {
         super();
+        this.ref = createRef();
         this.keyMap = {
             DELETE_FILE: "del",
             SELECT_ALL: `${isMac() ? 'command' : 'ctrl'}+a`
@@ -221,6 +222,42 @@ class ExplorerCompoment extends Component {
 
         const showView = !this.props.loading && (this.props.dirList.length !== 0 ||
           this.props.fileList.length !== 0)
+        const quickView = (
+            <div className={classes.flexFix}>
+                {this.props.fileList.length !== 0 && (
+            <>
+                <Typography
+                    data-clickAway={"true"}
+                    variant="body2"
+                    className={classes.typeHeader}
+                >
+                    快速访问
+                </Typography>
+                <Grid
+                    data-clickAway={"true"}
+                    container
+                    spacing={0}
+                    alignItems="flex-start"
+                >
+                    {this.props.fileList.map(
+                        (value, index) => (
+                            <Grid
+                                key={value.id+1}
+                                item
+                                className={["grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7", "grid-8", "grid-9"]}
+                            >
+                                <ObjectIcon
+                                    key={value.id+1}
+                                    index={index}
+                                    file={value}
+                                    topRef={this.ref}
+                                    extraInfo={"您在过去一天内打开过"}
+                                />
+                            </Grid>
+                        )
+                    )}
+                </Grid>
+            </>)}</div>)
         const listView = (
           <Table className={classes.table}>
             <TableHead>
@@ -361,10 +398,10 @@ class ExplorerCompoment extends Component {
                   />
                 )}
               {this.props.dirList.map((value, index) => (
-                <ObjectIcon key={value.id} file={value} index={index}/>
+                <ObjectIcon key={value.id} file={value} index={index} topRef={this.ref}/>
               ))}
               {this.props.fileList.map((value, index) => (
-                <ObjectIcon key={value.id} file={value} index={index}/>
+                <ObjectIcon key={value.id} file={value} index={index} topRef={this.ref}/>
               ))}
             </TableBody>
           </Table>
@@ -399,6 +436,7 @@ class ExplorerCompoment extends Component {
                                       key={value.id}
                                       file={value}
                                       index={index}
+                                      topRef={this.ref}
                                   />
                               </Grid>
                           )
@@ -433,6 +471,7 @@ class ExplorerCompoment extends Component {
                                       key={value.id}
                                       index={index}
                                       file={value}
+                                      topRef={this.ref}
                                   />
                               </Grid>
                           )
@@ -445,6 +484,7 @@ class ExplorerCompoment extends Component {
         const view = this.props.viewMethod === "list" ? listView : normalView
         return (
             <div
+                ref={this.ref}
                 onContextMenu={this.contextMenu}
                 onClick={this.ClickAway}
                 data-clickAway={"true"}
@@ -514,6 +554,7 @@ class ExplorerCompoment extends Component {
                         </div>
                     </div>
                 )}
+                {showView && quickView}
                 {showView && view}
             </div>
         );

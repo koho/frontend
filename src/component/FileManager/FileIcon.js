@@ -252,6 +252,7 @@ class FileIconCompoment extends Component {
                             </Typography>
                         </Tooltip>
                     </div>
+                    {this.props.extraInfo !== "" && <div>{this.props.extraInfo}</div>}
                 </ButtonBase>
             </div>
         );

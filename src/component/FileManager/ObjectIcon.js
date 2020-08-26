@@ -299,8 +299,10 @@ export default function ObjectIcon(props) {
             console.log("Selecting file: " + id);
             selectFile({ctrlKey: null, metaKey: null, shiftKey: null});
             window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", ""));
-            if (myRef.current != null)
-                window.scrollTo(0, myRef.current.offsetTop);
+            if (myRef.current != null) {
+                props.topRef.current.scrollTo(myRef.current.parentElement.parentElement.offsetLeft, myRef.current.parentElement.parentElement.offsetTop);
+                window.scrollTo(myRef.current.parentElement.parentElement.offsetLeft, myRef.current.parentElement.parentElement.offsetTop);
+            }
         }
     }
 
@@ -310,10 +312,10 @@ export default function ObjectIcon(props) {
         // eslint-disable-next-line
     }, []);
 
-    if (viewMethod === "list") {
+    if (viewMethod === "list" && props.extraInfo == null) {
         return (
             <TableItem
-                ref={myRef}
+                iRef={myRef}
                 contextMenu={contextMenu}
                 handleClick={handleClick}
                 handleDoubleClick={handleDoubleClick.bind(this)}
@@ -337,13 +339,16 @@ export default function ObjectIcon(props) {
                 onClick={handleClick}
                 onDoubleClick={handleDoubleClick.bind(this)}
             >
-                {props.file.type === "dir" && viewMethod !== "list" && (
+                {props.file.type === "dir" && viewMethod !== "list" && props.extraInfo == null && (
                     <DropWarpper folder={props.file} />
                 )}
-                {props.file.type === "file" && viewMethod === "icon" && (
-                    <FileIcon ref={drag} file={props.file} />
+                {props.file.type === "file" && viewMethod === "icon" && props.extraInfo == null && (
+                    <FileIcon ref={drag} file={props.file}/>
                 )}
-                {props.file.type === "file" && viewMethod === "smallIcon" && (
+                {props.file.type === "file" && props.extraInfo != null && (
+                    <FileIcon ref={drag} file={props.file} extraInfo={props.extraInfo}/>
+                )}
+                {props.file.type === "file" && viewMethod === "smallIcon" && props.extraInfo == null && (
                     <SmallIcon file={props.file} />
                 )}
             </div>
