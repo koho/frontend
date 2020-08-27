@@ -198,3 +198,19 @@ export function vhCheck() {
     const vh = window.innerHeight;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
+
+export function changeURLArg(url,arg,arg_val) {
+    const pattern=arg+'=([^&]*)';
+    const replaceText=arg+'='+arg_val;
+    if(url.match(pattern)){
+        let tmp='/('+ arg+'=)([^&]*)/gi';
+        tmp=url.replace(eval(tmp),replaceText);
+        return tmp;
+    }else{
+        if(url.match('[?]')){
+            return url+'&'+replaceText;
+        }else{
+            return url+'?'+replaceText;
+        }
+    }
+}

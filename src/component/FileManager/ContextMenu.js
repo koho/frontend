@@ -21,7 +21,7 @@ import { openCompressDialog,openCreateFileDialog ,refreshFileList} from "../../a
 import { changeContextMenu, navigateTo, openCopyDialog, openCreateFolderDialog, openDecompressDialog, openGetSourceDialog, openLoadingDialog, openMoveDialog, openMusicDialog, openRemoteDownloadDialog, openRemoveDialog, openRenameDialog, openShareDialog, openTorrentDownloadDialog, setNavigatorLoadingStatus, setSelectedTarget, showImgPreivew, toggleSnackbar } from "../../actions/index";
 import { isCompressFile, isPreviewable, isTorrent } from "../../config";
 import Auth from "../../middleware/Auth";
-import { allowSharePreview } from "../../utils/index";
+import { allowSharePreview, changeURLArg } from "../../utils/index";
 import pathHelper from "../../utils/page";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
@@ -45,6 +45,7 @@ const mapStateToProps = state => {
         withFile: state.explorer.selectProps.withFile,
         path: state.navigator.path,
         selected: state.explorer.selected,
+        selectProps: state.explorer.selectProps,
         keywords: state.explorer.keywords,
     };
 };
@@ -153,6 +154,7 @@ class ContextMenuCompoment extends Component {
     };
 
     enterFolder = () => {
+        window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", this.props.selected[0].id));
         this.props.navigateTo(
             this.props.path === "/"
                 ? this.props.path + this.props.selected[0].name
@@ -197,6 +199,10 @@ class ContextMenuCompoment extends Component {
                 : this.props.selected[0].path +
                 "/" +
                 this.props.selected[0].name;
+        if (isPreviewable(this.props.selected[0].name)) {
+            const clickedId = this.props.selectProps.withExtra ? ("_" + this.props.selected[0].id) : this.props.selected[0].id;
+            window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", clickedId));
+        }
         switch (isPreviewable(this.props.selected[0].name)) {
             case "img":
                 this.props.showImgPreivew(this.props.selected[0]);

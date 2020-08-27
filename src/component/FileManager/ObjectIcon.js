@@ -23,7 +23,7 @@ import { getEmptyImage } from "react-dnd-html5-backend";
 import DropWarpper from "./DnD/DropWarpper";
 import { useHistory, useLocation } from "react-router-dom";
 import Auth from "../../middleware/Auth";
-import { pathBack } from "../../utils";
+import { pathBack, changeURLArg } from "../../utils";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -54,7 +54,7 @@ export default function ObjectIcon(props) {
         [dispatch]
     );
     const SetSelectedTarget = useCallback(
-        targets => dispatch(setSelectedTarget(targets)),
+        (targets, extra) => dispatch(setSelectedTarget(targets, extra)),
         [dispatch]
     );
 
@@ -89,13 +89,14 @@ export default function ObjectIcon(props) {
             return;
         }
         e.preventDefault();
-        if (
-            selected.findIndex(value => {
-                return value === props.file;
-            }) === -1
-        ) {
-            SetSelectedTarget([props.file]);
-        }
+        // if (
+        //     selected.findIndex(value => {
+        //         return value === props.file;
+        //     }) === -1
+        // ) {
+        //     SetSelectedTarget([props.file], props.extraInfo);
+        // }
+        SetSelectedTarget([props.file], props.extraInfo);
         ContextMenu("file", true);
     };
 
@@ -125,22 +126,6 @@ export default function ObjectIcon(props) {
         }
     };
 
-    const changeURLArg = (url,arg,arg_val) => {
-        const pattern=arg+'=([^&]*)';
-        const replaceText=arg+'='+arg_val;
-        if(url.match(pattern)){
-            let tmp='/('+ arg+'=)([^&]*)/gi';
-            tmp=url.replace(eval(tmp),replaceText);
-            return tmp;
-        }else{
-            if(url.match('[?]')){
-                return url+'&'+replaceText;
-            }else{
-                return url+'?'+replaceText;
-            }
-        }
-    };
-
     const getURLString = arg => {
         const reg = new RegExp("(\\?|&)" + arg + "=([^&]*)(&|$)", "i");
         const r = window.location.href.match(reg);
@@ -150,10 +135,15 @@ export default function ObjectIcon(props) {
     }
 
     const handleDoubleClick = () => {
+        const saveLastSelected = () => {
+            const clickedId = props.extraInfo == null ? selected[0].id : ("_" + selected[0].id);
+            window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", clickedId));
+        }
         if (props.file.type === "up") {
             return;
         }
         if (props.file.type === "dir") {
+            saveLastSelected();
             enterFolder();
             return;
         }
@@ -169,11 +159,12 @@ export default function ObjectIcon(props) {
             OpenLoadingDialog("获取下载地址...");
             return;
         }
-        window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", selected[0].id));
         const previewPath =
             selected[0].path === "/"
                 ? selected[0].path + selected[0].name
                 : selected[0].path + "/" + selected[0].name;
+        if (isPreviewable(selected[0].name))
+            saveLastSelected();
         switch (isPreviewable(selected[0].name)) {
             case "img":
                 ShowImgPreivew(selected[0]);
@@ -295,12 +286,15 @@ export default function ObjectIcon(props) {
 
     const handleSelect = function() {
         const id = getURLString("sel")
-        if (id != null && id === props.file.id) {
-            console.log("Selecting file: " + id);
+        const checkId = props.extraInfo == null ? props.file.id : ("_" + props.file.id);
+        if (id != null && id === checkId) {
             selectFile({ctrlKey: null, metaKey: null, shiftKey: null});
             window.history.replaceState(null, null, changeURLArg(window.location.href, "sel", ""));
             if (myRef.current != null) {
-                props.topRef.current.scrollTo(myRef.current.parentElement.parentElement.offsetLeft, myRef.current.parentElement.parentElement.offsetTop);
+                const h = viewMethod === "list" ? -props.topRef.current.children[2].offsetHeight : (myRef.current.parentElement.parentElement.offsetParent.offsetHeight - props.topRef.current.offsetHeight);
+                const topOffset = myRef.current.parentElement.parentElement.offsetTop - h;
+                const centerOffset = topOffset - props.topRef.current.offsetHeight / 2 + myRef.current.parentElement.parentElement.offsetHeight / 2;
+                props.topRef.current.scrollTo(myRef.current.parentElement.parentElement.offsetLeft, centerOffset);
                 window.scrollTo(myRef.current.parentElement.parentElement.offsetLeft, myRef.current.parentElement.parentElement.offsetTop);
             }
         }

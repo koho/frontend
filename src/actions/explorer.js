@@ -14,10 +14,11 @@ export const addSelectedTargets = targets => {
   };
 };
 
-export const setSelectedTarget = targets => {
+export const setSelectedTarget = (targets, extra) => {
   return {
       type: "SET_SELECTED_TARGET",
       targets,
+      extra
   };
 };
 

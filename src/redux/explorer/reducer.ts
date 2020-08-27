@@ -6,6 +6,7 @@ interface SelectProps {
   isMultiple: boolean;
   withFolder: boolean;
   withFile: boolean;
+  withExtra: boolean;
 }
 
 export interface ExplorerState {
@@ -39,7 +40,8 @@ export const initState: ExplorerState = {
   selectProps: {
       isMultiple: false,
       withFolder: false,
-      withFile: false
+      withFile: false,
+      withExtra: false,
   },
   lastSelect: {
     file: {
@@ -68,7 +70,7 @@ export const initState: ExplorerState = {
   fileSave: false
 }
 
-const checkSelectedProps = (selected: CloudreveFile[]): SelectProps =>{
+const checkSelectedProps = (selected: CloudreveFile[], withExtra: boolean): SelectProps =>{
   const isMultiple = selected.length > 1;
   let withFolder = false
   let withFile = false
@@ -83,6 +85,7 @@ const checkSelectedProps = (selected: CloudreveFile[]): SelectProps =>{
     isMultiple,
     withFolder,
     withFile,
+    withExtra
   }
 }
 
@@ -106,13 +109,13 @@ const explorer = (state: ExplorerState = initState, action: AnyAction): Explorer
       const addedSelected = [...state.selected,...action.targets]
       return Object.assign({}, state, {
         selected: addedSelected,
-        selectProps: checkSelectedProps(addedSelected)
+        selectProps: checkSelectedProps(addedSelected, action.extra != null)
       });
     case 'SET_SELECTED_TARGET':
       const newSelected = action.targets
       return Object.assign({}, state, {
         selected: newSelected,
-        selectProps: checkSelectedProps(newSelected)
+        selectProps: checkSelectedProps(newSelected, action.extra != null)
       });
     case 'RMOVE_SELECTED_TARGETS':
       const { fileIds } = action
@@ -121,7 +124,7 @@ const explorer = (state: ExplorerState = initState, action: AnyAction): Explorer
       })
       return Object.assign({}, state, {
         selected: filteredSelected,
-        selectProps: checkSelectedProps(filteredSelected)
+        selectProps: checkSelectedProps(filteredSelected, action.extra != null)
       });
     case 'REFRESH_FILE_LIST':
       return Object.assign({}, state, {
@@ -177,6 +180,7 @@ const explorer = (state: ExplorerState = initState, action: AnyAction): Explorer
             isMultiple: false,
             withFolder: false,
             withFile: false,
+            withExtra: false
         },
         keywords: '',
       }
