@@ -53,6 +53,14 @@ const styles = theme => ({
         color: "#6b6b6b",
         fontWeight: "500"
     },
+    quickRow: {
+        height: "203px",
+        overflow: "hidden"
+    },
+    quickRowList: {
+        height: "196px",
+        overflow: "hidden"
+    },
     loading: {
         justifyContent: "center",
         display: "flex",
@@ -90,6 +98,11 @@ const styles = theme => ({
     },
     flexFix: {
         minWidth: 0
+    },
+    flexFixList: {
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        paddingTop: "10px"
     },
     upButton: {
         marginLeft: "20px",
@@ -222,9 +235,55 @@ class ExplorerCompoment extends Component {
 
         const showView = !this.props.loading && (this.props.dirList.length !== 0 ||
           this.props.fileList.length !== 0)
+        const getDateDiff = dateTimeStamp => {
+            // 时间字符串转时间戳
+            const timestamp = new Date(dateTimeStamp).getTime();
+
+            const minute = 1000 * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+            const halfamonth = day * 15;
+            const month = day * 30;
+            const year = day * 365;
+            const now = new Date().getTime();
+            const diffValue = now - timestamp;
+            let result;
+            if (diffValue < 0) {
+                return;
+            }
+            const yearC = diffValue / year;
+            const monthC = diffValue / month;
+            const weekC = diffValue / (7 * day);
+            const dayC = diffValue / day;
+            const hourC = diffValue / hour;
+            const minC = diffValue / minute;
+            if (yearC >= 1) {
+                result = "" + parseInt(yearC) + "年前";
+            } else if (monthC >= 1) {
+                result = "" + parseInt(monthC) + "月前";
+            } else if (weekC >= 1) {
+                result = "" + parseInt(weekC) + "周前";
+            } else if (dayC >= 1) {
+                result = "" + parseInt(dayC) + "天前";
+            } else if (hourC >= 1) {
+                result = "" + parseInt(hourC) + "小时前";
+            } else if (minC >= 1) {
+                result = "" + parseInt(minC) + "分钟前";
+            } else
+                result = "刚刚";
+            return result;
+        };
+        let quickFileList = [];
+        for (const i in this.props.fileList) {
+            quickFileList.push([this.props.fileList[i], i])
+        }
+        quickFileList.sort(function(a, b) {
+            return new Date(b[0].access) - new Date(a[0].access);
+        })
+        quickFileList = quickFileList.slice(0, 9)
         const quickView = (
-            <div className={classes.flexFix}>
-                {this.props.fileList.length !== 0 && (
+            <div className={this.props.viewMethod === "list" ? classes.flexFixList : classes.flexFix}>
+                {quickFileList.length !== 0 && (
             <>
                 <Typography
                     data-clickAway={"true"}
@@ -238,20 +297,21 @@ class ExplorerCompoment extends Component {
                     container
                     spacing={0}
                     alignItems="flex-start"
+                    className={this.props.viewMethod === "list" ? classes.quickRowList : classes.quickRow}
                 >
-                    {this.props.fileList.map(
+                    {quickFileList.map(
                         (value, index) => (
                             <Grid
-                                key={value.id+1}
+                                key={value[0].id}
                                 item
                                 className={["grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7", "grid-8", "grid-9"]}
                             >
                                 <ObjectIcon
-                                    key={value.id+1}
-                                    index={index}
-                                    file={value}
+                                    key={value[0].id}
+                                    index={value[1]}
+                                    file={value[0]}
                                     topRef={this.ref}
-                                    extraInfo={"您在过去一天内打开过"}
+                                    extraInfo={value[0].access === value[0].date ? getDateDiff(value[0].access) + "上传" : getDateDiff(value[0].access) + "打开过"}
                                 />
                             </Grid>
                         )

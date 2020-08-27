@@ -75,6 +75,33 @@ const styles = theme => ({
         // borderRadius: "5px 5px 0 0",
         paddingTop: "50px"
     },
+    quickViewIcon: {
+        overflow: "hidden",
+        height: "100px",
+        width: "100%",
+        paddingTop: "31px"
+    },
+    quickPreview: {
+        overflow: "hidden",
+        height: "100px",
+        width: "100%",
+        borderRadius: "6px 6px 0 0",
+        backgroundColor: theme.palette.background.default
+    },
+    quickExtraInfo: {
+        textAlign: "left",
+        paddingLeft: "20px",
+        paddingBottom: "13px",
+        paddingRight: "20px",
+        color: "rgba(0,0,0,.54)",
+        fontSize: "12px",
+        lineHeight: "20px",
+        fontWeight: 500
+    },
+    quickFileInfo: {
+        height: "40px",
+        display: "flex"
+    },
     iconBig: {
         fontSize: 50
     },
@@ -157,7 +184,7 @@ class FileIconCompoment extends Component {
                         !this.state.showPicIcon &&
                         this.props.file.pic !== " " &&
                         this.props.file.pic !== "null,null" && (
-                            <div className={classes.preview}>
+                            <div className={this.props.extraInfo == null ? classes.preview : classes.quickPreview}>
                                 <LazyLoadImage
                                     className={classNames({
                                         [classes.hide]: this.state.loading,
@@ -211,7 +238,7 @@ class FileIconCompoment extends Component {
                         this.state.showPicIcon ||
                         this.props.file.pic === " " ||
                         this.props.file.pic === "null,null") && (
-                        <div className={classes.previewIcon}>
+                        <div className={this.props.extraInfo == null ? classes.previewIcon : classes.quickViewIcon}>
                             <TypeIcon
                                 className={classes.iconBig}
                                 fileName={this.props.file.name}
@@ -222,7 +249,7 @@ class FileIconCompoment extends Component {
                         this.state.showPicIcon ||
                         this.props.file.pic === " " ||
                         this.props.file.pic === "null,null") && <Divider />}
-                    <div className={classes.fileInfo}>
+                    <div className={this.props.extraInfo == null ? classes.fileInfo : classes.quickFileInfo}>
                         {!this.props.share && (
                             <div
                                 className={classNames(classes.icon, {
@@ -252,7 +279,7 @@ class FileIconCompoment extends Component {
                             </Typography>
                         </Tooltip>
                     </div>
-                    {this.props.extraInfo !== "" && <div>{this.props.extraInfo}</div>}
+                    {this.props.extraInfo != null && <div className={classes.quickExtraInfo}>{this.props.extraInfo}</div>}
                 </ButtonBase>
             </div>
         );

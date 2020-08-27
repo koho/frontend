@@ -47,7 +47,8 @@ export const initState: ExplorerState = {
       name: '',
       size: 0,
       type: 'file',
-      date: ''
+      date: '',
+      access: ''
     },
     index: -1,
   },
@@ -58,7 +59,8 @@ export const initState: ExplorerState = {
         name: '',
         size: 0,
         type: 'file',
-        date: ''
+        date: '',
+        access: ''
       },
       other: []
   },

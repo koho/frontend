@@ -328,7 +328,7 @@ export default function ObjectIcon(props) {
         <div
             ref={drag}
             className={classNames({
-                [classes.container]: viewMethod !== "list",
+                [classes.container]: viewMethod !== "list" || props.extraInfo != null,
                 [classes.dragging]: isDragging
             })}
         >

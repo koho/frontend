@@ -3,6 +3,7 @@ export interface CloudreveFile {
   name: string,
   size: number,
   date: string,
+  access: string,
   type: 'up' | 'file' | 'dir'
 }
 
